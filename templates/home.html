@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+{% if not user.is_authenticated %}
+<br>
+<h3>You're not allowed to see app's content <br><br> <span class="label label-danger">Please login or sign up first</span></h3>
+{% else %}
+<br>
+<h3>Hi {{ user.username }}, <br><br> <span class="label label-info">Please navigate to ToDo Apps page to create one</span></h3>
+
+{% endif %}
+{% endblock %}

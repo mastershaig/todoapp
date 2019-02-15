@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>To do lists</title>
+</head>
+<body>
+    <div>
+        {% for todo in todolist %}
+            <ul>
+                <li><a href="#">{{ todo.full_name }}</a></li>
+            </ul>
+        {% endfor %}
+    </div>
+</body>
+</html>

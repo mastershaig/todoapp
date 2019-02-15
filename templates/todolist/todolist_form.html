@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+
+{% block title %}TodoList{% endblock %}
+
+{% block content %}
+<script type="text/javascript" src="{% static 'bootstrap/js/moment.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'bootstrap/js/bootstrap-datepicker.js' %}"></script>
+<script type="text/javascript" src="{% static 'bootstrap/js/bootstrap-datetimepicker.min.js' %}"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap-datetimepicker.min.css' %}">
+<div class="container">
+
+    <div class='col-md-12'>
+              <h1>Todolist Form</h1>
+
+<form method="post">
+  {% csrf_token %}
+{% load widget_tweaks %}
+  {% for hidden_field in form.hidden_fields %}
+    {{ hidden_field }}
+  {% endfor %}
+
+  {% if form.non_field_errors %}
+    <div class="alert alert-danger" role="alert">
+      {% for error in form.non_field_errors %}
+        {{ error }}
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  {% for field in form.visible_fields %}
+    <div class="form-group">
+      {{ field.label_tag }}
+
+      {% if form.is_bound %}
+        {% if field.errors %}
+          {% render_field field class="form-control is-invalid" %}
+          {% for error in field.errors %}
+            <div class="invalid-feedback">
+              {{ error }}
+            </div>
+          {% endfor %}
+        {% else %}
+          {% render_field field class="form-control is-valid" %}
+        {% endif %}
+      {% else %}
+        {% render_field field class="form-control" %}
+      {% endif %}
+
+      {% if field.help_text %}
+        <small class="form-text text-muted">{{ field.help_text }}</small>
+      {% endif %}
+    </div>
+  {% endfor %}
+
+  <button type="submit" class="btn btn-primary">Create</button>
+</form>
+    </div>
+</div>
+<script type="text/javascript">
+            $('#datetimepicker').datetimepicker({
+                format: 'YYYY-MM-DD HH:mm:ss'
+            });
+
+</script>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}TodoList{% endblock %}
+
+{% block content %}
+
+<h1>TodoList</h1>
+
+<table class="table table-striped" border="1">
+<thead>
+    <tr>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Deadline</th>
+    <th>Owner</th>
+    <th>View</th>
+    <th>Share</th>
+    <th>Delete</th>
+    </tr>
+</thead>
+<tbody>
+    {% for todo in selfcreatedones %}
+    <tr>
+    <td>{{ todo.name }}</td>
+    <td>{{ todo.description }}</td>
+    <td>{{ todo.end_date }}</td>
+    <td>{{ todo.author }}</td>
+    <td><a href="{% url "todo_view" todo.id %}">view</a></td>
+    <td><a href="{% url "todo_edit" todo.id %}">share</a></td>
+    <td><a href="{% url "todo_delete" todo.id %}">delete</a></td>
+    </tr>
+    {% endfor %}
+
+    {% for todo in sharedones %}
+    <tr>
+    <td>{{ todo.todoes.name }}</td>
+    <td>{{ todo.todoes.description }}</td>
+    <td>{{ todo.todoes.end_date }}</td>
+    <td>{{ todo.todoes.author }}</td>
+    <td><a href="{% url "todo_view" todo.todoes.id %}">view</a></td>
+    <td></td>
+    <td></td>
+    </tr>
+    {% endfor %}
+</tbody>
+</table>
+
+<a href="{% url "todo_new" %}" class="btn btn-info btn-lg" role="button">Create New Todo</a>
+
+{% endblock %}

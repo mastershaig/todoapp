@@ -1,0 +1,38 @@
+.mgt20{
+    margin-top:20px;
+}
+.nav>li>a
+{
+padding:15px 15px !important;
+}
+.flr{
+float:right
+}
+.navbar-header{
+width:100%;
+}
+.btn-group
+{
+    margin-top: 9px;
+}
+table thead,table tbody{
+    border:1px solid #ddd;
+}
+#id_type li{
+    width: 20%;
+    height: 50px;
+    float: left;
+    list-style: none;
+}
+#id_type{
+    height: 80px;
+    list-style: none;
+    border: 0;
+    background: none;
+    box-shadow: 0 0 0 0;
+}
+#id_type input{
+    border:0;
+    background:0;
+    box-shadow: 0 0 0 0;
+}

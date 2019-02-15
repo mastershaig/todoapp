@@ -1,0 +1,70 @@
+version: '3'
+
+services:
+
+  postgres:
+    container_name:  postgres-db
+    image:           postgres:9.6.6
+    ports:
+      - 5432:5432 # Bind host port 5432 to PostgreSQL port 5432
+    volumes:
+      - ./pgdb:/var/lib/postgresql/data
+    env_file: .env
+    environment:
+      - LC_ALL=C.UTF-8
+
+
+  redis:
+    build:
+      context: .
+      dockerfile: redis.dockerfile
+    restart: "always"
+    container_name: redis
+    ports:
+      - 6379:6379
+    volumes:
+      - ./redisdb:/var/lib/redis
+    env_file: .env
+
+
+  celery:
+    restart: "always"
+    build:
+      context: .
+      dockerfile: celery.dockerfile
+    container_name: celery
+    env_file: .env
+    command: celery --app=djtodoapp.celery:app worker -B --loglevel=INFO
+    volumes:
+      - .:/src
+    links:
+      - redis
+      - postgres
+    depends_on:
+      - "redis"
+      - "postgres"
+
+  web:
+    container_name: task
+    build: .
+    restart: "always"
+    env_file: .env
+    environment:
+      - VIRTUAL_HOST=task.labcodes.net
+      - VIRTUAL_PORT=8045
+      - TIMEOUT=300
+      - HTTP_PORT=8045
+      - STATS_PORT=8046
+    volumes:
+      - .:/task
+    ports:
+      - "8045:8045"
+    links:
+      - postgres
+    depends_on:
+      - "postgres"
+
+networks:
+  default:
+    external:
+      name: nginx-proxy

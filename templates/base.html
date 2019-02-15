@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]><html class="no-js ie6 oldie" lang="en"><![endif]-->
+<!--[if IE 7]><html class="no-js ie7 oldie" lang="en"><![endif]-->
+<!--[if IE 8]><html class="no-js ie8 oldie" lang="en"><![endif]-->
+<!--[if IE 9]><html class="no-js ie9" lang="en"><![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="en"><!--<![endif]-->
+<head>
+    {% load static %}
+<script type="text/javascript" src="{% static 'todoapp/js/jquery.js' %}"></script>
+<script type="text/javascript" src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+  <link rel="stylesheet" type="text/css" href="{% static 'todoapp/css/style.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+  <meta charset="utf-8">
+  <title>{% block title %}Todo App{% endblock %}</title>
+</head>
+<body>
+  <div class="container">
+    <nav class="navbar navbar-default mgt20">
+  <div class="container-fluid">
+    <div class="navbar-header">
+    <div class="col-md-12">
+{% if user.is_authenticated %}
+        <ul class="nav nav-pills">
+
+  <li role="presentation"><a href="{% url 'home' %}">Home</a></li>
+  <li role="presentation"><a href="/todolist">ToDo Apps</a></li>
+            <!-- Split button -->
+
+<div class="btn-group flr">
+  <button type="button" class="btn btn-default">{{ user.username }}</button>
+  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <span class="caret"></span>
+    <span class="sr-only">Toggle Dropdown</span>
+  </button>
+  <ul class="dropdown-menu">
+    <li><a href="{% url 'logout' %}">Logout</a></li>
+
+  </ul>
+</div>
+</ul>
+
+
+{% else %}
+<ul class="nav nav-pills">
+
+  <li role="presentation"><a href="{% url 'home' %}">Home</a></li>
+  <li role="presentation"><a href="{% url 'login' %}">Login</a></li>
+  <li role="presentation"><a href="{% url 'signup' %}">signup</a></li>
+</ul>
+
+{% endif %}
+    </div>
+      </div>
+  </div>
+</nav>
+    {% block content %}
+    {% endblock %}
+
+    </div>
+  </main>
+  <script>$('.dropdown-toggle').dropdown()
+</script>
+</body>
+</html>

@@ -1,0 +1,184 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}TodoList{% endblock %}
+
+{% block content %}
+
+<div class="panel panel-info">
+  <div class="panel-body panel-heading">
+    <h2>Todolist Details</h2>
+
+  </div>
+  <div class="panel-body">
+    <h4>Name: <b>{{object.name}}</b></h4>
+    <h4>Description: <b>{{object.description}}</b></h4>
+    <h4>Owner: <b>{{ object.author }}</b></h4>
+    <h4>Deadline: <b>{{ object.end_date }}</b></h4>
+</div>
+</div>
+
+{% if allowcomment == 1 %}
+
+    <div class="container">
+        <div class="row">
+            <main class="col col-xl-1 order-xl-2 col-lg-12 order-lg-1 col-md-12 col-sm-12 col-12">
+                <div class="ui-block"></div>
+            </main>
+            <main class="col col-xl-12  order-xl-2 col-lg-12 order-lg-1 col-md-12 col-sm-12 col-12">
+                <div class="ui-block">
+
+                    <div class="messaging">
+                        <div class="inbox_msg">
+                            <div class="mesgs">
+                                <div class="msg_history comment">
+                                </div>
+                                <div class="type_msg">
+                                    <div class="input_msg_write">
+                                        <div class="comment-form inline-items">
+                                            <div class="post__author author vcard inline-items">
+
+                                                <div class="form-group with-icon-right is-empty">
+                                                    <textarea id="message-messenger" class="form-control"
+                                                             placeholder="Comment here"></textarea>
+                                                    <span class="material-input"></span><span
+                                                       class="material-input"></span></div>
+                                            </div>
+                                            <button class="btn btn-md-2 btn-primary send-button"
+                                                   style="padding: 4px 12px !important;">
+                                                Send
+                                            </button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </main>
+
+        </div>
+    </div>
+
+{% block messenger_script %}
+    <style type="text/css">
+        .avatar-image-right {
+            float: right;
+        }
+
+        .avatar-image-left {
+            float: left;
+        }
+    </style>
+    <script>
+
+        var room_name = "{{ room.pk }}";
+        var my_id = Number("{{ request.user.pk }}");
+        window.chat_user = Number("{{ object.pk }}");
+
+        function list_item(text) {
+            return "<li>" + text + "</li><hr>";
+        }
+
+
+        function append_data(text, user_id, date, msg_id,username) {
+                var start = "<div class=\"panel panel-default\">";
+                var content = "<div class=\"panel-heading\" data-msg-id='\" + msg_id + \"'> <strong>" + username + "</strong><span datetime='"+date+"' class=\"text-muted\"> commented on " + date + "</span></div><div class=\"panel-body\">"+text+"</div>";
+                var end = "</div>";
+                $(".comment").append(start + content + end);
+
+            $('.comment').scrollTop($('.comment')[0].scrollHeight);
+        }
+
+        var messenger;
+        if (location.protocol === 'https:') {
+            messenger = new WebSocket('wss://' + window.location.host + '/comment/' + room_name + "/");
+        }
+        else {
+            messenger = new WebSocket('ws://' + window.location.host + '/comment/' + room_name + "/");
+        }
+
+        messenger.onopen = function open() {
+            //console.log('WebSockets connection to Messenger.');
+        };
+        messenger.onmessage = function message(event) {
+            var data = JSON.parse(event.data);
+           // console.log("Messenger Socket response => ", data);
+            $('.center-loading').remove();
+            if (data && data.length > 0) {
+               console.log("Data's comin");
+                for (var i = 0; i < data.length; i++) {
+                   console.log(data[i].content);
+
+                   append_data(data[i].content, data[i].user, data[i].created_at, data[i].pk,data[i].user__username);
+               }
+           }
+           else if (data.length === 0) {
+               console.log("Boshdu");
+           }
+           else {
+               console.log("Data var =>", data);
+                append_data(data.message, data.user_id, data.date, data.pk,data.username);
+            }
+        };
+        if (messenger.readyState === WebSocket.OPEN) {
+            messenger.onopen();
+        }
+
+        $("#message-messenger").keypress(function (e) {
+            if (e.which === 13) {
+                $(".send-button").click();
+            }
+        });
+
+        $(".send-button").click(function (e) {
+            var src = $("#message-messenger");
+            var word = src.val();
+            word = word.trim();
+            if (word !== "") {
+                messenger.send(JSON.stringify(
+                    {"message": word}
+                ));
+                src.val("");
+            }
+            else {
+                src.val("");
+                return false
+            }
+
+        });
+function timeSince(date) {
+
+  var seconds = Math.floor((new Date() - date) / 1000);
+
+  var interval = Math.floor(seconds / 31536000);
+
+  if (interval > 1) {
+    return interval + " years";
+  }
+  interval = Math.floor(seconds / 2592000);
+  if (interval > 1) {
+    return interval + " months";
+  }
+  interval = Math.floor(seconds / 86400);
+  if (interval > 1) {
+    return interval + " days";
+  }
+  interval = Math.floor(seconds / 3600);
+  if (interval > 1) {
+    return interval + " hours";
+  }
+  interval = Math.floor(seconds / 60);
+  if (interval > 1) {
+    return interval + " minutes";
+  }
+  return Math.floor(seconds) + " seconds";
+}
+    </script>
+{% endblock messenger_script %}
+{% endif %}
+
+{% endblock content %}
+
+
