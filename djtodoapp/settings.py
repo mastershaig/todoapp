@@ -23,8 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '!d8m16%)2@latd2#+e59ks_tr&^9=*-tcp_y-stktqdmg1&8mg'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-PROD = not DEBUG
+DEBUG = False
 ALLOWED_HOSTS = ['*']
 
 
@@ -147,13 +146,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
-# if PROD:
-# STATIC_ROOT = os.path.join(BASE_DIR, "static")
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
-# else:
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static")
-]
 
 AUTH_USER_MODEL = 'users.CustomUser'
 LOGIN_URL = '/users/login/'
