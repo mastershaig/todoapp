@@ -47,7 +47,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'users.apps.UsersConfig',
     'todolist.apps.TodolistConfig',
-    'widget_tweaks'
+    'widget_tweaks',
+    'celery',
+    'django_celery_results',
+    'django_celery_beat'
 
 
 ]
