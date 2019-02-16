@@ -20,9 +20,9 @@ def debug_task(self):
 
 
 app.conf.update(
-    BROKER_URL='redis://localhost:6379/0',
+    BROKER_URL='redis://redis:6379/0',
     CELERYBEAT_SCHEDULER='django_celery_beat.schedulers:DatabaseScheduler',
-    CELERY_RESULT_BACKEND='redis://localhost:6379/1',
+    CELERY_RESULT_BACKEND='redis://redis:6379/1',
     CELERY_DISABLE_RATE_LIMITS=True,
     CELERY_ACCEPT_CONTENT=['json', ],
     CELERY_TASK_SERIALIZER='json',
