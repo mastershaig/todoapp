@@ -13,7 +13,7 @@ channels==2.1.7
 channels-redis==2.3.3
 constantly==15.1.0
 daphne==2.2.5
-Django==2.2.20
+Django==2.2.21
 django-celery-beat==1.4.0
 django-celery-results==1.0.4
 django-timezone-field==3.0
