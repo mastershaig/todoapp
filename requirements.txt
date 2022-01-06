@@ -8,7 +8,7 @@ autobahn==19.2.1
 Automat==0.7.0
 billiard==3.5.0.5
 bson==0.5.7
-celery==4.2.1
+celery==5.2.2
 channels==2.1.7
 channels-redis==2.3.3
 constantly==15.1.0
