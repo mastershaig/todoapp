@@ -15,7 +15,7 @@ constantly==15.1.0
 daphne==2.2.5
 Django==2.2.20
 django-celery-beat==1.4.0
-django-celery-results==1.0.4
+django-celery-results==2.4.0
 django-timezone-field==3.0
 django-widget-tweaks==1.4.3
 hiredis==1.0.0
